@@ -21,8 +21,7 @@ router.get('/index', (req, res, next) => {
 
 // Route requests that start with an expression to a controller
 router.use('/about', require('../controllers/about.js'))
-router.use('/customer', require('../controllers/customer.js'))
-router.use('/developer', require('../controllers/developer.js'))
+router.use('/addnewuser', require('../controllers/addnewuser.js'))
 router.use('/orderlineitem', require('../controllers/orderlineitem.js'))
 router.use('/order', require('../controllers/order.js'))
 router.use('/product', require('../controllers/product.js'))

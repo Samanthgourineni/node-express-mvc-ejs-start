@@ -1,15 +1,14 @@
-/** 
-*  Customer controller
-*  Handles requests related to customers (see routes)
-*
-* @author Denise Case <dcase@nwmissouri.edu>
+/**
+*  Developer controller
+*  Handles requests related to developer resources.
+
 *
 */
 const express = require('express')
 const api = express.Router()
 const LOG = require('../utils/logger.js')
-const Model = require('../models/customer.js')
-const notfoundstring = 'customer not found'
+const Model = require('../models/addnewuser.js')
+const notfoundstring = 'Could not find user with id='
 
 // RESPOND WITH JSON DATA  --------------------------------------------
 
@@ -39,8 +38,8 @@ api.get('/', (req, res) => {
   LOG.info(`Handling GET / ${req}`)
   Model.find({}, (err, data) => {
     if (err) { return res.end('Error') }
-    res.locals.customers = data
-    res.render('customer/index.ejs')
+    res.locals.addnewusers = data
+    res.render('addnewuser/index.ejs')
   })
 })
 
@@ -49,9 +48,9 @@ api.get('/create', (req, res) => {
   LOG.info(`Handling GET /create ${req}`)
   Model.find({}, (err, data) => {
     if (err) { return res.end('error on create') }
-    res.locals.customers = data
-    res.locals.customer = new Model()
-    res.render('customer/create')
+    res.locals.addnewusers = data
+    res.locals.addnewuser = new Model()
+    res.render('addnewuser/create.ejs')
   })
 })
 
@@ -62,8 +61,8 @@ api.get('/delete/:id', (req, res) => {
   Model.find({ _id: id }, (err, results) => {
     if (err) { return res.end(notfoundstring) }
     LOG.info(`RETURNING VIEW FOR ${JSON.stringify(results)}`)
-    res.locals.customer = results[0]
-    return res.render('customer/delete.ejs')
+    res.locals.addnewuser = results[0]
+    return res.render('addnewuser/delete.ejs')
   })
 })
 
@@ -74,8 +73,8 @@ api.get('/details/:id', (req, res) => {
   Model.find({ _id: id }, (err, results) => {
     if (err) { return res.end(notfoundstring) }
     LOG.info(`RETURNING VIEW FOR ${JSON.stringify(results)}`)
-    res.locals.customer = results[0]
-    return res.render('customer/details.ejs')
+    res.locals.addnewuser = results[0]
+    return res.render('addnewuser/details.ejs')
   })
 })
 
@@ -86,8 +85,8 @@ api.get('/edit/:id', (req, res) => {
   Model.find({ _id: id }, (err, results) => {
     if (err) { return res.end(notfoundstring) }
     LOG.info(`RETURNING VIEW FOR${JSON.stringify(results)}`)
-    res.locals.customer = results[0]
-    return res.render('customer/edit.ejs')
+    res.locals.addnewuser = results[0]
+    return res.render('addnewuser/edit.ejs')
   })
 })
 
@@ -109,10 +108,11 @@ api.post('/save', (req, res) => {
   item.state = req.body.state
   item.zip = req.body.zip
   item.country = req.body.country
+  item.url = req.body.url
   item.save((err) => {
     if (err) { return res.end('ERROR: item could not be saved') }
     LOG.info(`SAVING NEW item ${JSON.stringify(item)}`)
-    return res.redirect('/customer')
+    return res.redirect('/addnewuser')
   })
 })
 
@@ -132,7 +132,8 @@ api.post('/save/:id', (req, res) => {
         city: req.body.city,
         state: req.body.state,
         zip: req.body.zip,
-        country: req.body.country
+        country: req.body.country,
+        url: req.body.url
       }
     },
     (err, item) => {
@@ -140,7 +141,7 @@ api.post('/save/:id', (req, res) => {
       LOG.info(`ORIGINAL VALUES ${JSON.stringify(item)}`)
       LOG.info(`UPDATED VALUES: ${JSON.stringify(req.body)}`)
       LOG.info(`SAVING UPDATED item ${JSON.stringify(item)}`)
-      return res.redirect('/customer')
+      return res.redirect('/addnewuser')
     })
 })
 
@@ -152,7 +153,7 @@ api.post('/delete/:id', (req, res) => {
   Model.remove({ _id: id }).setOptions({ single: true }).exec((err, deleted) => {
     if (err) { return res.end(notfoundstring) }
     console.log(`Permanently deleted item ${JSON.stringify(deleted)}`)
-    return res.redirect('/customer')
+    return res.redirect('/addnewuser')
   })
 })
 

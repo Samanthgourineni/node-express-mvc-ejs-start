@@ -7,4 +7,4 @@ cache:
 addons:
   chrome: stable
 script:
- - npm run $TEST
+ - npm run $PRODUCTION

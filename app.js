@@ -90,8 +90,7 @@ connection.once('open', function () {
   LOG.info('MongoDB event open')
   LOG.info(`MongoDB connected ${dbURI}\n`)
 
-  seed('developers')
-  seed('customers')
+  seed('addnewusers')
   seed('products')
   seed('orders')
   seed('orderlineitems')
@@ -145,10 +144,10 @@ app.use((req, res) => { res.status(404).render('404.ejs') }) // handle page not 
 
 // call app.listen to start server
 const host = app.get('host')
-const env = isProduction ? 'production' : 'development'
+const env = app.get('env')
 
 app.listen(process.env.PORT || 8089, () => {
-  console.log(`\nApp running at http://${host}:${port}/ with ${env} data`)
+  console.log(`\nApp running at http://${host}:${port}/ in ${env} mode`)
   console.log('Press CTRL-C to stop\n')
 })
 
